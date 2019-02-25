@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="./style/style.css">
+    <title>Menu</title>
+</head>
+<body>
+    <div id="1" class="column">
+        <div onclick="add('flowertea')">flowertea</div>
+        <ul id="flowertea" class="flowertea">
+            <!-- <li><input type="text" value="1"></li> -->
+        </ul>
+    </div>
+    <div id="2" class="column">
+        <div onclick="add('coffee')">coffee</div>
+        <ul id="coffee" class="coffee">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+        <div onclick="add('noncoffee')">noncoffee</div>
+        <ul id="noncoffee" class="noncoffee">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+    </div>
+    <div id="3" class="column">
+        <div onclick="add('juice')">juice</div>
+        <ul id="juice" class="juice">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+        <div onclick="add('ade')">ade</div>
+        <ul id="ade" class="ade">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+    </div>
+    <div id="4" class="column">
+        <div onclick="add('bakery')">bakery</div>
+        <ul id="bakery" class="bakery">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+        <div onclick="add('brunch')">brunch</div>
+        <ul id="brunch" class="brunch">
+            <!-- <li><input type="text" value="1"></li>
+            <li><input type="text" value="2"></li>
+            <li><input type="text" value="3"></li>
+            <li><input type="text" value="4"></li>
+            <li><input type="text" value="5"></li>
+            <li><input type="text" value="6"></li> -->
+        </ul>
+    </div>
+    </body>
+<script>
+    
+    var menujson = JSON.parse(localStorage.getItem('menu'));
+    var menu = new Object();
+    menu.flowertea = menujson.flowertea;
+    menu.coffee = menujson.coffee;
+    menu.noncoffee = menujson.noncoffee;
+    menu.juice = menujson.juice;
+    menu.ade = menujson.ade;
+    menu.bakery = menujson.bakery;
+    menu.brunch = menujson.brunch;
+    console.log(menu);
+    
+    for(var i=0; i<menu.flowertea.length; i++){
+        $("#flowertea").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.flowertea[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.coffee.length; i++){
+        $("#coffee").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.coffee[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.noncoffee.length; i++){
+        $("#noncoffee").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.noncoffee[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.juice.length; i++){
+        $("#juice").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.juice[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.ade.length; i++){
+        $("#ade").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.ade[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.bakery.length; i++){
+        $("#bakery").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.bakery[i]+"></li>"
+        )
+    }
+    for(var i=0; i<menu.brunch.length; i++){
+        $("#brunch").append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.brunch[i]+"></li>"
+        )
+    }
+
+    
+    //아이템 추가
+    function add(id){
+        console.log(id);
+        $("."+id).append(
+            "<li class=\"ui-sortable-handle\"><input type=\"text\"></li>"
+        );
+    };
+
+    $(function(){
+        $("body").sortable({
+            update: function(){
+                var column = [];
+                $("body").find('.column').each(function(i,e){
+                    column.push($(this).attr("id"));
+                });
+                console.log(column);
+            },
+        })
+        $("ul").sortable({
+            update: function () {
+                var menuname = $(this).attr("id");
+                if (menuname == 'flowertea') {
+                    menu.flowertea = [];
+                } else if (menuname == 'coffee') {
+                    menu.coffee = [];
+                } else if (menuname == 'noncoffee') {
+                    menu.noncoffee = [];
+                } else if (menuname == 'juice') {
+                    menu.juice = [];
+                } else if (menuname == 'ade') {
+                    menu.ade = [];
+                } else if (menuname == 'bakery') {
+                    menu.bakery = [];
+                } else {
+                    menu.brunch = [];
+                }
+                $(this).find("li>:input").each(function (i, e) {
+                    if (menuname == 'flowertea') {
+                        menu.flowertea.push($(this).val());
+                    } else if (menuname == 'coffee') {
+                        menu.coffee.push($(this).val());
+                    } else if (menuname == 'noncoffee') {
+                        menu.noncoffee.push($(this).val());
+                    } else if (menuname == 'juice') {
+                        menu.juice.push($(this).val());
+                    } else if (menuname == 'ade') {
+                        menu.ade.push($(this).val());
+                    } else if (menuname == 'bakery') {
+                        menu.bakery.push($(this).val());
+                    } else {
+                        menu.brunch.push($(this).val());
+                    }
+                });
+                
+                console.log(menu);
+                localStorage.setItem('menu',JSON.stringify(menu));
+            },
+        });
+    });
+</script>
+</html>

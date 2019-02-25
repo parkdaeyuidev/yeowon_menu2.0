@@ -1,0 +1,51 @@
+html{
+
+}
+
+@font-face {
+    font-family: "NanumMyeongjo";
+    src: url(../font/NanumMyeongjo.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "NanumMyeongjoBold";
+    src: url(../font/NanumMyeongjoBold.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "NanumMyeongjoExtraBold";
+    src: url(../font/NanumMyeongjoExtraBold.ttf) format("truetype");
+}
+
+
+nr{
+    font-family: "NanumMyeongjo"
+}
+
+nb{
+    font-family: "NaNumMyeongjoBold"
+}
+
+neb{
+    font-family: "NanumMyeongjoExtraBold"
+}
+
+body{
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.column{
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.component{
+    flex:1;
+    border: 1px solid red;
+    text-align: center;
+}

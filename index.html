@@ -79,9 +79,11 @@
     </div>
     </body>
 <script>
-    String.prototype.replaceAll = function(org, dest) {
-    return this.split(org).join(dest);
-}
+        String.prototype.replaceAll = function (org, dest) {
+            return this.split(org).join(dest);
+        }
+
+        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\ \"]/gi;
 
     
     var menujson = JSON.parse(localStorage.getItem('menu'));
@@ -111,37 +113,37 @@
     //불러온 html에 붙여넣기
     for(var key in menu.flowertea){
         $("#flowertea").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"flowertea_item\" class="+menu.flowertea[key]+" type=\"text\" value="+menu.flowertea[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"flowertea_item\" class="+menu.flowertea[key].replaceAll(RegExp,"")+" type=\"text\" value="+menu.flowertea[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in menu.coffee){
         $("#coffee").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"coffee_item\" type=\"text\" value="+menu.coffee[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"coffee_item\" type=\"text\" value="+menu.coffee[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in menu.noncoffee){
         $("#noncoffee").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"noncoffee_item\" type=\"text\" value="+menu.noncoffee[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"noncoffee_item\" type=\"text\" value="+menu.noncoffee[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in menu.juice){
         $("#juice").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"juice_item\" type=\"text\" value="+menu.juice[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"juice_item\" type=\"text\" value="+menu.juice[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in menu.ade){
         $("#ade").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"ade_item\" type=\"text\" value="+menu.ade[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"ade_item\" type=\"text\" value="+menu.ade[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in  menu.bakery){
         $("#bakery").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"bakery_item\" type=\"text\" value="+menu.bakery[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"bakery_item\" type=\"text\" value="+menu.bakery[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
     for(var key in menu.brunch){
         $("#brunch").append(
-            "<li class=\"ui-sortable-handle\"><input id=\"brunch_item\" type=\"text\" value="+menu.brunch[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"brunch_item\" type=\"text\" value="+menu.brunch[key].replaceAll(RegExp,"")+"><span id=\"delete\">X</span></li>"
         )
     }
 
@@ -189,19 +191,19 @@
                 console.log(menu);
                 $("#"+menuname).find("li>:input").each(function (i, e) {
                     if (menuname == 'flowertea') {
-                        menu.flowertea[$(this).val().replaceAll(" "," ")] = $(this).val().replaceAll(" ","&nbsp;");
+                        menu.flowertea[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'coffee') {
-                        menu.coffee[$(this).val().replaceAll(" "," ")] = $(this).val().replaceAll(" ","&nbsp;");
+                        menu.coffee[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'noncoffee') {
-                        menu.noncoffee[$(this).val().replaceAll(" "," ")]=$(this).val().replaceAll(" ","&nbsp;");
+                        menu.noncoffee[$(this).val().replaceAll(RegExp,"")]=$(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'juice') {
-                        menu.juice[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                        menu.juice[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'ade') {
-                        menu.ade[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                        menu.ade[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'bakery') {
-                        menu.bakery[$(this).val().replaceAll(" ","&nbsp;")]=$(this).val().replaceAll(" ","&nbsp;");
+                        menu.bakery[$(this).val().replaceAll(RegExp,"")]=$(this).val().replaceAll(" ","&nbsp;");
                     } else {
-                        menu.brunch[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                        menu.brunch[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     }
                 });
                 
@@ -213,14 +215,18 @@
         //메뉴삭제
         $(document).on("click","#delete",function(){
             var menuid = $(this).prev().attr("class");
+            console.log(typeof(menuid));
             console.log(menuid);
+            console.log(menu.flowertea);
+            console.log(menu.flowertea[menuid]);
             var menuname = $(this).prev().attr("id").replace("_item","");
             console.log(menuname);
+
             if (menuname == 'flowertea') {
+                console.log(menu.flowertea[menuid]);
                 delete menu.flowertea[menuid];
                 $(this).prev().remove();
                 $(this).remove();
-                console.log(menu.flowertea[menuid]);
                 
                 console.log(menu.flowertea);
             } else if (menuname == 'coffee') {
@@ -262,19 +268,19 @@
                 }
                 $(this).find("li>:input").each(function (i, e) {
                     if (menuname == 'flowertea') {
-                        menu.flowertea[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
+                        menu.flowertea[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'coffee') {
-                        menu.coffee[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
+                        menu.coffee[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'noncoffee') {
-                        menu.noncoffee[$(this).val().replace(" ","&nbsp;")]=$(this).val().replace(" ","&nbsp;");
+                        menu.noncoffee[$(this).val().replaceAll(RegExp,"")]=$(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'juice') {
-                        menu.juice[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
+                        menu.juice[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'ade') {
-                        menu.ade[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
+                        menu.ade[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     } else if (menuname == 'bakery') {
-                        menu.bakery[$(this).val().replace(" ","&nbsp;")]=$(this).val().replace(" ","&nbsp;");
+                        menu.bakery[$(this).val().replaceAll(RegExp,"")]=$(this).val().replaceAll(" ","&nbsp;");
                     } else {
-                        menu.brunch[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
+                        menu.brunch[$(this).val().replaceAll(RegExp,"")] = $(this).val().replaceAll(" ","&nbsp;");
                     }
                 });
                 

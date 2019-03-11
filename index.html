@@ -79,106 +79,202 @@
     </div>
     </body>
 <script>
+    String.prototype.replaceAll = function(org, dest) {
+    return this.split(org).join(dest);
+}
+
     
     var menujson = JSON.parse(localStorage.getItem('menu'));
     var menu = new Object();
-    menu.flowertea = menujson.flowertea;
-    menu.coffee = menujson.coffee;
-    menu.noncoffee = menujson.noncoffee;
-    menu.juice = menujson.juice;
-    menu.ade = menujson.ade;
-    menu.bakery = menujson.bakery;
-    menu.brunch = menujson.brunch;
+    //메뉴 초기화
+    if(menujson == null){
+        menu.flowertea = {};
+        menu.coffee = {};
+        menu.noncoffee = {};
+        menu.juice = {};
+        menu.ade = {};
+        menu.bakery = {};
+        menu.brunch = {};
+    //메뉴가 있을시에 로드
+    }else{
+        menu.flowertea = menujson.flowertea;
+        menu.coffee = menujson.coffee;
+        menu.noncoffee = menujson.noncoffee;
+        menu.juice = menujson.juice;
+        menu.ade = menujson.ade;
+        menu.bakery = menujson.bakery;
+        menu.brunch = menujson.brunch;
+    }
+    
     console.log(menu);
     
-    for(var i=0; i<menu.flowertea.length; i++){
+    //불러온 html에 붙여넣기
+    for(var key in menu.flowertea){
         $("#flowertea").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.flowertea[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"flowertea_item\" class="+menu.flowertea[key]+" type=\"text\" value="+menu.flowertea[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.coffee.length; i++){
+    for(var key in menu.coffee){
         $("#coffee").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.coffee[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"coffee_item\" type=\"text\" value="+menu.coffee[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.noncoffee.length; i++){
+    for(var key in menu.noncoffee){
         $("#noncoffee").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.noncoffee[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"noncoffee_item\" type=\"text\" value="+menu.noncoffee[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.juice.length; i++){
+    for(var key in menu.juice){
         $("#juice").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.juice[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"juice_item\" type=\"text\" value="+menu.juice[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.ade.length; i++){
+    for(var key in menu.ade){
         $("#ade").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.ade[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"ade_item\" type=\"text\" value="+menu.ade[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.bakery.length; i++){
+    for(var key in  menu.bakery){
         $("#bakery").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.bakery[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"bakery_item\" type=\"text\" value="+menu.bakery[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
-    for(var i=0; i<menu.brunch.length; i++){
+    for(var key in menu.brunch){
         $("#brunch").append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\" value="+menu.brunch[i]+"></li>"
+            "<li class=\"ui-sortable-handle\"><input id=\"brunch_item\" type=\"text\" value="+menu.brunch[key].replaceAll(" ","&nbsp;")+"><span id=\"delete\">X</span></li>"
         )
     }
 
     
-    //아이템 추가
+    //메뉴 추가
     function add(id){
         console.log(id);
         $("."+id).append(
-            "<li class=\"ui-sortable-handle\"><input type=\"text\"></li>"
+            "<li class=\"ui-sortable-handle\"><input id="+id+"_item type=\"text\"><span id=\"delete\">X</span></li>"
         );
     };
 
     $(function(){
-        $("body").sortable({
-            update: function(){
-                var column = [];
-                $("body").find('.column').each(function(i,e){
-                    column.push($(this).attr("id"));
+        // $("body").sortable({
+        //     update: function(){
+        //         var column = [];
+        //         $("body").find('.column').each(function(i,e){
+        //             column.push($(this).attr("id"));
+        //         });
+        //         console.log(column);
+        //     },
+        // });
+
+        //새 메뉴 추가 & 수정
+        $(document).on("keypress","input",function(){
+            if(event.charCode == 13){
+                console.log("Enter");
+                var menuname = $(this).attr("id").replace("_item","");
+                console.log(menuname);
+                if (menuname == 'flowertea') {
+                    menu.flowertea = {};
+                } else if (menuname == 'coffee') {
+                    menu.coffee = {};
+                } else if (menuname == 'noncoffee') {
+                    menu.noncoffee = {};
+                } else if (menuname == 'juice') {
+                    menu.juice = {};
+                } else if (menuname == 'ade') {
+                    menu.ade = {};
+                } else if (menuname == 'bakery') {
+                    menu.bakery = {};
+                } else {
+                    menu.brunch = {};
+                }
+                console.log(menu);
+                $("#"+menuname).find("li>:input").each(function (i, e) {
+                    if (menuname == 'flowertea') {
+                        menu.flowertea[$(this).val().replaceAll(" "," ")] = $(this).val().replaceAll(" ","&nbsp;");
+                    } else if (menuname == 'coffee') {
+                        menu.coffee[$(this).val().replaceAll(" "," ")] = $(this).val().replaceAll(" ","&nbsp;");
+                    } else if (menuname == 'noncoffee') {
+                        menu.noncoffee[$(this).val().replaceAll(" "," ")]=$(this).val().replaceAll(" ","&nbsp;");
+                    } else if (menuname == 'juice') {
+                        menu.juice[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                    } else if (menuname == 'ade') {
+                        menu.ade[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                    } else if (menuname == 'bakery') {
+                        menu.bakery[$(this).val().replaceAll(" ","&nbsp;")]=$(this).val().replaceAll(" ","&nbsp;");
+                    } else {
+                        menu.brunch[$(this).val().replaceAll(" ","&nbsp;")] = $(this).val().replaceAll(" ","&nbsp;");
+                    }
                 });
-                console.log(column);
-            },
-        })
+                
+                console.log(menu);
+                localStorage.setItem('menu',JSON.stringify(menu));
+            }
+        });
+
+        //메뉴삭제
+        $(document).on("click","#delete",function(){
+            var menuid = $(this).prev().attr("class");
+            console.log(menuid);
+            var menuname = $(this).prev().attr("id").replace("_item","");
+            console.log(menuname);
+            if (menuname == 'flowertea') {
+                delete menu.flowertea[menuid];
+                $(this).prev().remove();
+                $(this).remove();
+                console.log(menu.flowertea[menuid]);
+                
+                console.log(menu.flowertea);
+            } else if (menuname == 'coffee') {
+                delete menu.coffee[key];
+                console.log(menu.coffee);
+            } else if (menuname == 'noncoffee') {
+                delete menu.noncoffee[value];
+            } else if (menuname == 'juice') {
+                delete menu.juice[value];
+            } else if (menuname == 'ade') {
+                delete menu.ade[value];
+            } else if (menuname == 'bakery') {
+                delete menu.bakery[value];
+            } else {
+                delete menu.brunch[value];
+            }
+            console.log(menu);
+            localStorage.setItem('menu',JSON.stringify(menu));
+        });
+
+        //메뉴이동 & 저장
         $("ul").sortable({
             update: function () {
                 var menuname = $(this).attr("id");
                 if (menuname == 'flowertea') {
-                    menu.flowertea = [];
+                    menu.flowertea = {};
                 } else if (menuname == 'coffee') {
-                    menu.coffee = [];
+                    menu.coffee = {};
                 } else if (menuname == 'noncoffee') {
-                    menu.noncoffee = [];
+                    menu.noncoffee = {};
                 } else if (menuname == 'juice') {
-                    menu.juice = [];
+                    menu.juice = {};
                 } else if (menuname == 'ade') {
-                    menu.ade = [];
+                    menu.ade = {};
                 } else if (menuname == 'bakery') {
-                    menu.bakery = [];
+                    menu.bakery = {};
                 } else {
-                    menu.brunch = [];
+                    menu.brunch = {};
                 }
                 $(this).find("li>:input").each(function (i, e) {
                     if (menuname == 'flowertea') {
-                        menu.flowertea.push($(this).val());
+                        menu.flowertea[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
                     } else if (menuname == 'coffee') {
-                        menu.coffee.push($(this).val());
+                        menu.coffee[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
                     } else if (menuname == 'noncoffee') {
-                        menu.noncoffee.push($(this).val());
+                        menu.noncoffee[$(this).val().replace(" ","&nbsp;")]=$(this).val().replace(" ","&nbsp;");
                     } else if (menuname == 'juice') {
-                        menu.juice.push($(this).val());
+                        menu.juice[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
                     } else if (menuname == 'ade') {
-                        menu.ade.push($(this).val());
+                        menu.ade[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
                     } else if (menuname == 'bakery') {
-                        menu.bakery.push($(this).val());
+                        menu.bakery[$(this).val().replace(" ","&nbsp;")]=$(this).val().replace(" ","&nbsp;");
                     } else {
-                        menu.brunch.push($(this).val());
+                        menu.brunch[$(this).val().replace(" ","&nbsp;")] = $(this).val().replace(" ","&nbsp;");
                     }
                 });
                 

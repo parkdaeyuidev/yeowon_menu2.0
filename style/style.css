@@ -54,4 +54,6 @@ body{
 input{
     border:none;
     background:transparent;
+    font-family: "NanumMyeongjo";
+    font-size:20px;
 }
